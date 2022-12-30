@@ -1,25 +1,62 @@
-import logo from './logo.svg';
-import './App.css';
+import { useContext, useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
+import styled, { ThemeProvider, createGlobalStyle } from "styled-components";
+import { AppContext } from "./app-context/AppContext";
+import AppControls from "./components/app-controls/AppControls";
+import AppHeader from "./components/app-header/AppHeader";
+import AppInput from "./components/app-input/AppInput";
 
-function App() {
+const App = () => {
+  const { theme } = useContext(AppContext);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <GlobalStyle />
+      <ThemeProvider theme={theme}>
+        <SectionWrapper>
+          <Container className="h-100 d-flex justify-content-center align-items-center">
+            <Col sm={7} lg={5}>
+              <main className="calculator-app">
+                <AppHeader />
+                <AppInput />
+                <AppControls />
+              </main>
+            </Col>
+          </Container>
+        </SectionWrapper>
+      </ThemeProvider>
+    </>
   );
-}
+};
 
 export default App;
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@700&display=swap');
+    * {
+      margin: 0;
+      padding: 0;
+      font-weight: 700;
+      box-sizing: border-box;
+      font-family: 'League Spartan', sans-serif;
+    }
+
+    input {
+      border: none;
+      &:focus {
+        outline: none;
+      } 
+    }
+  }
+
+`;
+
+const SectionWrapper = styled.section`
+  height: 100vh;
+  background-color: ${({ theme }) => theme.mainBackground};
+
+  .calculator-app {
+    padding: 1.5rem;
+  }
+`;
